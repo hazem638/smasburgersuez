@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍔</text></svg>">
+<link rel="preconnect" href="://httpsfonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cairo:wght@400;600;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--red:#C92A1F;--gold:#F2B134;--ink:#141211;--panel:#1F1B19;--line:#3A332F;--cream:#F5EBDD;--muted:#B8ADA2}
+[hidden]{display:none!important}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:76px;overflow-x:hidden}
+body{font-family:Cairo,system-ui,sans-serif;background:var(--ink);color:var(--cream);line-height:1.8}
+img{display:block;max-width:100%}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+.wrap{max-width:1100px;margin:auto;padding:0 20px}
+section{padding:56px 0;border-top:1px solid var(--line)}
+h2{font-weight:900;font-size:clamp(26px,4vw,36px);line-height:1.25;margin-bottom:24px}
+.skip{position:absolute;left:-999px;top:0;background:var(--cream);color:var(--ink);padding:8px 12px}
+.skip:focus{left:10px;top:10px;z-index:999}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 22px;border:2px solid var(--red);border-radius:999px;background:var(--red);color:#fff;font:800 15px Cairo,sans-serif;text-decoration:none;cursor:pointer;transition:background .2s,color .2s}
+.btn:hover{background:var(--gold);border-color:var(--gold);color:var(--ink)}
+.btn.ghost{background:transparent;border-color:var(--gold);color:var(--gold)}
+.btn.ghost:hover{background:var(--gold);color:var(--ink)}
+.btn:disabled,.btn:disabled:hover{opacity:.45;cursor:not-allowed;background:var(--red);border-color:var(--red);color:#fff}
+.btn.full{width:100%;margin-top:16px}
+.actions{display:flex;flex-wrap:wrap;gap:10px}
+header{position:sticky;top:0;z-index:50;background:rgba(20,18,17,.96);border-bottom:2px solid var(--red)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;min-height:60px;padding-top:6px;padding-bottom:6px}
+.logo{font:400 30px 'Bebas Neue',sans-serif;letter-spacing:2px;color:var(--gold);text-decoration:none;direction:ltr}
+nav{display:flex;flex-wrap:wrap;gap:2px}
+nav a{display:inline-flex;align-items:center;min-height:44px;padding:0 10px;font-weight:600;font-size:14px;text-decoration:none}
+nav a:hover{color:var(--gold)}
+.cart-btn{position:relative}
+.badge{position:absolute;top:-8px;left:-8px;min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:var(--gold);color:var(--ink);font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center}
+.hero{padding:40px 0 48px;border-top:0;background:radial-gradient(circle at 80% 20%,#3a1512 0,var(--ink) 60%)}
+.hero .wrap{display:grid;gap:28px;grid-template-columns:minmax(0,1fr)}
+.wordmark{font:400 clamp(64px,22vw,170px)/.9 'Bebas Neue',sans-serif;letter-spacing:2px;white-space:pre-line;direction:ltr;text-align:start}
+.tag{font-size:19px;margin:14px 0 22px}
+.hero img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:6px}
+@media(min-width:840px){.hero .wrap{grid-template-columns:repeat(2,minmax(0,1fr));align-items:center}}
+.lead{max-width:640px;color:var(--muted)}
+.note{color:var(--muted);font-size:14px;margin-top:8px}
+.cat{margin-bottom:34px}
+.cat h3{font-size:20px;font-weight:900;color:var(--gold);padding-bottom:8px;border-bottom:1px solid var(--line)}
+.row{display:grid;grid-template-columns:88px minmax(0,1fr) auto;gap:14px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
+.thumb{position:relative;width:88px;height:88px;border-radius:6px;background:var(--panel);display:grid;place-items:center;font-size:30px;overflow:hidden}
+.thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.row.off{opacity:.5}
+.row h4{font-size:17px;font-weight:800}
+.row p{color:var(--muted);font-size:14px;line-height:1.6}
+.allergy{color:#E9A39C;font-size:12px!important}
+.side{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.price{font:400 26px 'Bebas Neue',sans-serif;letter-spacing:1px}
+.price small{font:600 13px Cairo,sans-serif;letter-spacing:0}
+@media(max-width:480px){.row{grid-template-columns:72px minmax(0,1fr)}.thumb{width:72px;height:72px}.side{grid-column:1/-1;flex-direction:row;justify-content:space-between;align-items:center}}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:200;display:none;overflow-y:auto;padding:16px}
+.overlay.open{display:block}
+.sheet{position:relative;max-width:480px;margin:20px auto;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px}
+.sheet:focus{outline:none}
+.sheet img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:8px;margin-bottom:14px}
+.sheet h2{font-size:24px;margin-bottom:6px}
+.sheet h3{font-size:15px;color:var(--gold);margin:20px 0 8px}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opts label{display:flex;align-items:center;gap:8px;min-height:44px;padding:8px 14px;border:1px solid var(--line);border-radius:8px;cursor:pointer}
+.opts label:has(input:checked){border-color:var(--gold)}
+.opts input{width:20px;height:20px;accent-color:var(--red)}
+.opts small{color:var(--muted)}
+textarea,.field input{width:100%;padding:12px;border-radius:8px;background:#2a2421;color:var(--cream);border:1px solid #574c45;font:400 16px Cairo,sans-serif}
+textarea{min-height:80px;resize:vertical}
+.count{font-size:12px;color:var(--muted);text-align:left}
+.qty,.ctrl{display:flex;align-items:center;gap:12px}
+.qty{gap:16px}
+.qty button,.ctrl button{width:44px;height:44px;border-radius:8px;border:1px solid var(--line);background:#2a2421;color:var(--cream);font-size:20px;cursor:pointer}
+.qty span,.ctrl span{min-width:24px;text-align:center}
+.total{font-weight:800;font-size:20px;color:var(--gold);margin-top:14px}
+.close{position:absolute;top:12px;left:12px;width:44px;height:44px;border-radius:50%;border:0;background:var(--red);color:#fff;font-size:16px;cursor:pointer}
+.field{display:grid;gap:6px;margin-top:12px}
+.field label{font-weight:600;font-size:14px}
+.field input{min-height:44px}
+.sum p{margin-top:4px}
+.error{color:#FF9A8C;font-weight:600;min-height:1.5em;margin-top:10px}
+.hint{color:var(--gold);font-size:14px;margin-top:8px}
+.cline{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 10px;padding:14px 0;border-bottom:1px solid var(--line)}
+.cline small{display:block;color:var(--muted);font-size:13px;line-height:1.6}
+.cline .ctrl{grid-column:1/-1}
+.cline .del{width:auto;padding:0 14px;font-size:14px;margin-inline-start:auto}
+.grid2{display:grid;gap:14px;grid-template-columns:minmax(0,1fr)}
+@media(min-width:760px){.grid2{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.info{background:#191919}
+.card{border-top:2px solid var(--gold);padding:18px 0}
+.card h3{font-size:18px;font-weight:800;margin-bottom:6px}
+.card p{color:var(--muted)}
+.pill{display:inline-block;margin-top:6px;padding:2px 12px;border-radius:999px;font-size:13px;font-weight:700}
+.pill.on{background:#2E7D32;color:#fff}
+.pill.off{background:var(--line);color:var(--cream)}
+iframe{width:100%;max-width:100%;height:260px;border:0;border-radius:8px;margin-top:20px}
+.rating{font:400 56px 'Bebas Neue',sans-serif;color:var(--gold);letter-spacing:2px}
+.stars{font-size:22px;letter-spacing:3px;background:linear-gradient(90deg,var(--gold) var(--pct),#554b44 var(--pct));-webkit-background-clip:text;background-clip:text;color:transparent}
+.review{border-top:1px solid var(--line);padding:18px 0}
+.review.neg{border-top:2px solid var(--red)}
+.review .s{color:var(--gold);letter-spacing:2px}
+.review h3{font-size:16px;margin:6px 0 4px}
+.review p{color:var(--muted);font-size:15px}
+.review small{color:#8f857c;font-size:12px}
+.social{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.legal p{color:var(--muted);margin-bottom:12px}
+footer{padding:28px 0;border-top:2px solid var(--red);color:var(--muted);text-align:center;font-size:14px}
+footer strong{display:block;font:400 26px 'Bebas Neue',sans-serif;letter-spacing:2px;color:var(--cream)}
+footer a{color:var(--gold)}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);width:max-content;max-width:92%;background:var(--gold);color:var(--ink);font-weight:800;padding:12px 20px;border-radius:999px;z-index:300}
+</style>
+</head>
+<body>
+
+<a class="skip" href="#menu">تخطي للمنيو</a>
+
+<header>
+  <div class="wrap">
+    <a class="logo" href="#home" data-bind="brand"></a>
+    <nav aria-label="القائمة الرئيسية">
+      <a href="#menu">المنيو</a>
+      <a href="#about">عن المطعم</a>
+      <a href="#branches">الفروع</a>
+      <a href="#reviews">التقييمات</a>
+      <a href="#contact">تواصل معنا</a>
+    </nav>
+    <button class="btn ghost cart-btn" id="cartOpen" type="button">🛒 السلة <span class="badge" id="cartCount" hidden>0</span></button>
+  </div>
+</header>
+
+<noscript><p class="wrap" style="padding:24px 20px">الموقع محتاج JavaScript عشان يعرض المنيو والسلة. كلمنا على <a href="tel:+201204777713">01204777713</a>.</p></noscript>
+
+<main>
+  <section class="hero" id="home">
+    <div class="wrap">
+      <div>
+        <h1 class="wordmark" id="wordmark"></h1>
+        <p class="tag" data-bind="tagline"></p>
+        <div class="actions">
+          <a class="btn" href="#menu">اطلب أونلاين</a>
+          <a class="btn ghost" data-href="reserve" target="_blank" rel="noopener">احجز طاولة</a>
+          <a class="btn ghost" data-href="tel">اتصل بنا</a>
+          <a class="btn ghost" data-href="directions" target="_blank" rel="noopener">الاتجاهات</a>
+        </div>
+      </div>
+      <img id="heroImg" width="1000" height="750" alt="">
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap">
+      <h2>عن المطعم</h2>
+      <p class="lead" data-bind="about"></p>
+    </div>
+  </section>
+
+  <section id="menu">
+    <div class="wrap">
+      <h2>المنيو</h2>
+      <div id="menuList"></div>
+      <p class="note" id="allergenNote"></p>
+    </div>
+  </section>
+
+  <section id="delivery" class="info">
+    <div class="wrap">
+      <h2>التوصيل والاستلام</h2>
+      <div class="grid2">
+        <div class="card"><h3>توصيل للبيت</h3><p id="deliveryInfo"></p></div>
+        <div class="card"><h3>استلام من الفرع</h3><p>اطلب من الموقع واختار استلام، وهنأكد معاك وقت الاستلام على واتساب.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="branches">
+    <div class="wrap">
+      <h2>الفروع ومواعيد العمل</h2>
+      <div class="grid2">
+        <div class="card"><h3>مواعيد العمل</h3><p data-bind="hours"></p><span class="pill" id="openPill"></span></div>
+        <div class="card">
+          <h3>كلمنا</h3>
+          <p>الموبايل: <span dir="ltr" data-bind="phone"></span></p>
+          <div class="actions" style="margin-top:12px">
+            <a class="btn" data-href="tel">اتصل</a>
+            <a class="btn ghost" data-href="whatsapp" target="_blank" rel="noopener">واتساب</a>
+          </div>
+        </div>
+      </div>
+      <div class="grid2" id="branchList" style="margin-top:18px"></div>
+      <iframe id="mapFrame" title="خريطة الفرع الرئيسي" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+  </section>
+
+  <section id="reviews">
+    <div class="wrap">
+      <h2>آراء العملاء</h2>
+      <div class="card" style="max-width:420px">
+        <div class="rating" id="ratingNum"></div>
+        <div class="stars" id="stars"></div>
+        <p id="ratingText"></p>
+        <a class="btn ghost" style="margin-top:12px" data-href="reviews" target="_blank" rel="noopener">كل التقييمات على Google</a>
+      </div>
+      <div class="grid2" id="reviewList" style="margin-top:24px"></div>
+    </div>
+  </section>
+
+  <section id="contact" class="info">
+    <div class="wrap">
+      <h2>تواصل معنا</h2>
+      <p>العنوان الرئيسي: <span data-bind="address"></span></p>
+      <div class="social" id="social"></div>
+    </div>
+  </section>
+
+  <section id="privacy">
+    <div class="wrap legal" style="max-width:720px">
+      <h2>سياسة الخصوصية</h2>
+      <p>الموقع ده ما بيحفظش بياناتك على أي سيرفر. السلة بتتحفظ على متصفحك بس عشان متتمسحش لو قفلت الصفحة.</p>
+      <p>لما تبعت الطلب، بياناتك (الاسم، رقم الموبايل، العنوان، والطلب) بتتبعت للمطعم على واتساب، وسياسة واتساب بتنطبق على الرسالة.</p>
+      <p>الصفحة بتحمّل خطوط Google وخريطة Google، وGoogle ممكن تسجل بيانات الزيارة حسب سياستها.</p>
+      <p>لأي استفسار عن بياناتك، كلمنا على <span dir="ltr" data-bind="phone"></span>.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <strong data-bind="brand"></strong>
+    <p data-bind="slogan"></p>
+    <p style="margin-top:8px">© <span id="year"></span> <span data-bind="brand"></span> · <a href="#privacy">سياسة الخصوصية</a></p>
+  </div>
+</footer>
+
+<!-- Item dialog -->
+<div class="overlay" id="itemOv">
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="itemName" tabindex="-1">
+    <button class="close" type="button" data-close aria-label="إغلاق">✕</button>
+    <img id="itemImg" alt="" onerror="this.hidden=true">
+    <h2 id="itemName"></h2>
+    <p id="itemDesc" style="color:var(--muted)"></p>
+    <p class="allergy" id="itemAllergy"></p>
+    <div id="spicyBox">
+      <h3>الطعم</h3>
+      <div class="opts">
+        <label><input type="radio" name="spicy" value="عادي" checked> عادي</label>
+        <label><input type="radio" name="spicy" value="سبايسي"> سبايسي 🌶️</label>
+      </div>
+    </div>
+    <h3>إضافات</h3>
+    <div class="opts" id="extras"></div>
+    <h3><label for="notes">ملاحظات للمطبخ</label></h3>
+    <textarea id="notes" maxlength="200" placeholder="مثلاً: من غير بصل، الصوص على جنب"></textarea>
+    <div class="count"><span id="notesCount">0</span> / 200</div>
+    <h3>الكمية</h3>
+    <div class="qty">
+      <button type="button" id="qMinus" aria-label="تقليل الكمية">−</button>
+      <span id="qty" aria-live="polite">1</span>
+      <button type="button" id="qPlus" aria-label="زيادة الكمية">+</button>
+    </div>
+    <div class="total" id="itemTotal"></div>
+    <button class="btn full" type="button" id="addBtn">أضف للسلة</button>
+  </div>
+</div>
+
+<!-- Cart dialog -->
+<div class="overlay" id="cartOv">
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="cartTitle" tabindex="-1">
+    <button class="close" type="button" data-close aria-label="إغلاق">✕</button>
+    <h2 id="cartTitle">سلتك</h2>
+    <p id="cartEmpty" style="color:var(--muted)">السلة فاضية. اختار من المنيو وابدأ.</p>
+    <div id="cartBody">
+      <div id="cartItems"></div>
+      <button class="btn ghost" type="button" id="clearBtn" style="margin-top:12px">تفريغ السلة</button>
+      <form id="checkout" novalidate>
+        <h3 style="color:var(--gold);margin:22px 0 8px">نوع الطلب</h3>
+        <div class="opts">
+          <label><input type="radio" name="otype" value="delivery" checked> توصيل</label>
+          <label><input type="radio" name="otype" value="pickup"> استلام من الفرع</label>
+        </div>
+        <div class="field"><label for="cName">الاسم</label><input id="cName" autocomplete="name" required></div>
+        <div class="field"><label for="cPhone">رقم الموبايل</label><input id="cPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="01xxxxxxxxx" required></div>
+        <div class="field" id="addressField"><label for="cAddr">عنوان التوصيل بالتفصيل</label><input id="cAddr" autocomplete="street-address"></div>
+        <div class="sum" style="margin-top:18px">
+          <p>المجموع: <span id="subtotal"></span></p>
+          <p>التوصيل: <span id="fee"></span></p>
+          <p class="total">الإجمالي: <span id="grand"></span></p>
+        </div>
+        <p class="hint" id="orderHint"></p>
+        <p class="error" id="formError" role="alert"></p>
+        <button class="btn full" type="submit" id="submitBtn">أرسل الطلب على واتساب</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script>
+const CONFIG = {
+  brand: "SMASH BURGER",
+  slogan: "الطعم اللي ميتنساش 🍔",
+  city: "السويس",
+  tagline: "برجر سماش طازة، لحمة بتتقلي على الحديد ومكونات مختارة. الطعم اللي هتدمنه!",
+  about: "أهلاً بيك في SMASH BURGER. بنقدم برجر سماش طازة وفراخ كرسبي وبطاطس مقرمشة، مع صوصات وإضافات تعمل بيها طلبك على مزاجك. زورنا في السويس.",
+  heroImage: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=1000",
+  phone: "01204777713",
+  whatsapp: "201204777713",
+  colors: { red: "#C92A1F", gold: "#F2B134" },
+  hours: { open: "12:00", close: "02:00", text: "مفتوح يومياً من 12 ظهراً لحد 2 بعد نص الليل" },
+  delivery: { fee: 15, minOrder: 100, time: "30 - 45 دقيقة", areas: "السويس والملاحة الجديدة" },
+  branches: [
+    { name: "فرع السويس - أردور", address: "آخر شارع رواش، تقاطع الشهداء، بجوار أردور، السويس" },
+    { name: "فرع الملاحة الجديدة", address: "أمام كافيه فوكس، الملاحة الجديدة، السويس" },
+    { name: "فرع العين السخنة", address: "قرية لاسيرينا، العين السخنة" }
+  ],
+  rating: { value: 3.7, count: 30 },
+  mapsSearch: "https://www.google.com/maps/search/?api=1&query=SMASH+BURGER+SUEZ",
+  social: { instagram: "", facebook: "", tiktok: "" },
+  allergenNote: "المعلومات دي تقريبية. لو عندك حساسية، كلمنا قبل ما تطلب.",
+  categories: [["burgers", "البرجر"], ["chicken", "الدجاج"], ["sides", "الجانبية"]],
+  extras: [["جبنة زيادة", 15], ["صوص زيادة", 5], ["بيكون", 20], ["مخلل زيادة", 5]],
+  menu: [
+    { id: "classic", cat: "burgers", name: "Classic Smash", desc: "برجر لحم سماش مع الجبنة والصوص والخبز الطازج.", price: 190, spicy: true, img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600", allergens: ["جلوتين", "ألبان", "بيض"] },
+    { id: "double", cat: "burgers", name: "Double Smash", desc: "قطعتين لحم، جبنة شيدر، وصوص البرجر داخل خبز طري.", price: 250, spicy: true, img: "https://images.unsplash.com/photo-1553979459-d2229ba7433a?w=600", allergens: ["جلوتين", "ألبان", "بيض"] },
+    { id: "chicken", cat: "chicken", name: "Crispy Chicken", desc: "فراخ مقرمشة مع الجبنة والصوص والخس.", price: 175, spicy: true, img: "https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=600", allergens: ["جلوتين", "ألبان", "بيض"] },
+    { id: "fries", cat: "sides", name: "French Fries", desc: "بطاطس ذهبية ومقرمشة.", price: 50, spicy: false, img: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=600", allergens: [] }
+  ],
+  reviews: [
+    { name: "أحمد أ.", stars: 5, text: "مطعم كويس جداً والبرجر رائع." },
+    { name: "توتا أ.", stars: 5, text: "بتشيد بجودة الأكل والعيش الطازج وحجم الوجبات والنظافة وتعامل الموظفين." },
+    { name: "ر. س.", stars: 5, text: "بتوصفه بإنه من أفضل أماكن البرجر في السويس." },
+    { name: "محمد أ.", stars: 1, text: "بتشتكي من تأخير التوصيل ووصول الأكل بارد ونقص بعض الأصناف." }
+  ]
+};
+
+const C = CONFIG, $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const MAX_QTY = 20, KEY = 'smash_cart_v1';
+const menuItem = id => C.menu.find(m => m.id === id);
+const unitPrice = (m, ex) => m.price + ex.reduce((s, i) => s + C.extras[i][1], 0);
+const lineTotal = l => unitPrice(menuItem(l.id), l.extras) * l.qty;
+const dirUrl = a => 'https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(a);
+const intlPhone = '+20' + C.phone.slice(1);
+const allergyText = list => 'حساسية: ' + (list.length ? list.join('، ') : 'غير مسجلة، اسأل الفرع');
+
+/* 1. Brand, colors and links come from CONFIG */
+document.documentElement.style.setProperty('--red', C.colors.red);
+document.documentElement.style.setProperty('--gold', C.colors.gold);
+document.title = C.brand + ' | برجر في ' + C.city;
+$('meta[name=description]').content = C.brand + ' في ' + C.city + ': برجر سماش وفراخ كرسبي وبطاطس. اطلب أونلاين، احجز طاولة، واعرف الاتجاهات لكل فرع.';
+const BIND = { brand: C.brand, slogan: C.slogan, tagline: C.tagline, about: C.about, hours: C.hours.text, phone: C.phone, address: C.branches[0].address };
+$$('[data-bind]').forEach(el => el.textContent = BIND[el.dataset.bind] ?? '');
+$('#wordmark').textContent = C.brand.replace(' ', '\n');
+$('#heroImg').src = C.heroImage;
+$('#heroImg').alt = C.brand + ' - برجر سماش';
+$('#allergenNote').textContent = C.allergenNote;
+$('#deliveryInfo').textContent = `المناطق: ${C.delivery.areas}. رسوم التوصيل ${C.delivery.fee} جنيه، والحد الأدنى للطلب ${C.delivery.minOrder} جنيه. الوقت التقريبي ${C.delivery.time}.`;
+
+const LINKS = {
+  tel: 'tel:' + intlPhone,
+  whatsapp: 'https://wa.me/' + C.whatsapp,
+  reserve: 'https://wa.me/' + C.whatsapp + '?text=' + encodeURIComponent('أهلاً، عايز أحجز طاولة.\nالاسم:\nعدد الأفراد:\nالميعاد:'),
+  directions: dirUrl(C.branches[0].address),
+  reviews: C.mapsSearch
+};
+$$('[data-href]').forEach(a => a.href = LINKS[a.dataset.href]);
+
+/* 2. Opening status in Cairo time, refreshed every minute */
+function updateOpenStatus() {
+  const p = new Intl.DateTimeFormat('en-GB', { timeZone: 'Africa/Cairo', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(new Date());
+  const now = (+p.find(x => x.type === 'hour').value) * 60 + (+p.find(x => x.type === 'minute').value);
+  const toMin = t => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };
+  const o = toMin(C.hours.open), c = toMin(C.hours.close);
+  const open = o <= c ? now >= o && now < c : now >= o || now < c;
+  const pill = $('#openPill');
+  pill.textContent = open ? 'مفتوح دلوقتي' : 'مقفول دلوقتي، بنفتح ' + C.hours.open;
+  pill.className = 'pill ' + (open ? 'on' : 'off');
+}
+updateOpenStatus();
+setInterval(updateOpenStatus, 60000);
+
+/* 3. Render menu, branches, reviews, rating, social, schema */
+const rowHtml = m => `
+  <div class="row${m.available === false ? ' off' : ''}">
+    <div class="thumb"><span aria-hidden="true">🍔</span><img src="${esc(m.img)}" alt="${esc(m.name)}" loading="lazy" onerror="this.remove()"></div>
+    <div><h4>${esc(m.name)}</h4><p>${esc(m.desc)}</p><p class="allergy">${esc(allergyText(m.allergens))}</p></div>
+    <div class="side">
+      <div class="price">${m.price} <small>جنيه</small></div>
+      ${m.available === false ? '<span>غير متاح</span>' : `<button class="btn" type="button" data-add="${esc(m.id)}" aria-label="أضف ${esc(m.name)} للسلة">أضف</button>`}
+    </div>
+  </div>`;
+$('#menuList').innerHTML = C.categories.map(([key, label]) => {
+  const items = C.menu.filter(m => m.cat === key);
+  return items.length ? `<div class="cat"><h3>${esc(label)}</h3>${items.map(rowHtml).join('')}</div>` : '';
+}).join('');
+
+$('#branchList').innerHTML = C.branches.map(b => `
+  <div class="card"><h3>${esc(b.name)}</h3><p>${esc(b.address)}</p>
+  <a class="btn ghost" style="margin-top:10px" href="${dirUrl(b.address)}" target="_blank" rel="noopener">الاتجاهات للفرع</a></div>`).join('');
+$('#mapFrame').src = 'https://www.google.com/maps?q=' + encodeURIComponent(C.branches[0].address) + '&output=embed';
+
+$('#ratingNum').textContent = C.rating.value.toFixed(1) + ' / 5';
+$('#ratingText').textContent = 'بناءً على ' + C.rating.count + ' مراجعة على Google';
+const stars = $('#stars');
+stars.textContent = '★★★★★';
+stars.style.setProperty('--pct', (C.rating.value / 5 * 100) + '%');
+stars.setAttribute('role', 'img');
+stars.setAttribute('aria-label', C.rating.value + ' من 5 نجوم');
+
+$('#reviewList').innerHTML = C.reviews.map(r => `
+  <div class="review${r.stars <= 2 ? ' neg' : ''}">
+    <div class="s" role="img" aria-label="${r.stars} من 5 نجوم">${'★'.repeat(r.stars) + '☆'.repeat(5 - r.stars)}</div>
+    <h3>${esc(r.name)}</h3><p>${esc(r.text)}</p><small>ملخص مراجعة منشورة على Google</small>
+  </div>`).join('');
+
+const NAMES = { instagram: 'Instagram', facebook: 'Facebook', tiktok: 'TikTok' };
+$('#social').innerHTML = Object.entries(C.social).filter(([, u]) => u)
+  .map(([k, u]) => `<a class="btn ghost" href="${esc(u)}" target="_blank" rel="noopener noreferrer">${NAMES[k]}</a>`).join('');
+
+const ld = {
+  '@context': 'https://schema.org', '@type': 'Restaurant', name: C.brand, telephone: intlPhone,
+  servesCuisine: 'Burgers', priceRange: 'EGP', openingHours: 'Mo-Su ' + C.hours.open + '-' + C.hours.close,
+  address: { '@type': 'PostalAddress', streetAddress: C.branches[0].address, addressLocality: C.city, addressCountry: 'EG' },
+  aggregateRating: { '@type': 'AggregateRating', ratingValue: C.rating.value, reviewCount: C.rating.count, bestRating: 5 }
+};
+const ldScript = document.createElement('script');
+ldScript.type = 'application/ld+json';
+ldScript.textContent = JSON.stringify(ld);
+document.head.append(ldScript);
+$('#year').textContent = new Date().getFullYear();
+
+/* 4. Item dialog */
+let cur = null, qty = 1, lastFocus = null;
+const itemOv = $('#itemOv'), cartOv = $('#cartOv');
+$('#extras').innerHTML = C.extras.map(([n, p], i) => `<label><input type="checkbox" value="${i}"> ${esc(n)} <small>(+${p} جنيه)</small></label>`).join('');
+
+function refreshItemTotal() {
+  const ex = $$('#extras input:checked').map(i => +i.value);
+  $('#itemTotal').textContent = 'الإجمالي: ' + unitPrice(cur, ex) * qty + ' جنيه';
+}
+function openItem(id) {
+  cur = menuItem(id); qty = 1;
+  $('#itemImg').hidden = false;
+  $('#itemImg').src = cur.img;
+  $('#itemImg').alt = cur.name;
+  $('#itemName').textContent = cur.name;
+  $('#itemDesc').textContent = cur.desc;
+  $('#itemAllergy').textContent = allergyText(cur.allergens);
+  $('#spicyBox').hidden = !cur.spicy;
+  $('input[name=spicy][value="عادي"]').checked = true;
+  $$('#extras input').forEach(i => i.checked = false);
+  $('#notes').value = '';
+  $('#notesCount').textContent = '0';
+  $('#qty').textContent = qty;
+  refreshItemTotal();
+  openOv(itemOv);
+}
+$('#menuList').addEventListener('click', e => { const b = e.target.closest('[data-add]'); if (b) openItem(b.dataset.add); });
+$('#extras').addEventListener('change', refreshItemTotal);
+$('#qMinus').onclick = () => { qty = Math.max(1, qty - 1); $('#qty').textContent = qty; refreshItemTotal(); };
+$('#qPlus').onclick = () => { qty = Math.min(MAX_QTY, qty + 1); $('#qty').textContent = qty; refreshItemTotal(); };
+$('#notes').addEventListener('input', e => $('#notesCount').textContent = e.target.value.length);
+$('#addBtn').onclick = () => {
+  const ex = $$('#extras input:checked').map(i => +i.value).sort((a, b) => a - b);
+  const spicy = cur.spicy && document.querySelector('input[name=spicy]:checked').value === 'سبايسي';
+  addLine({ id: cur.id, spicy, extras: ex, notes: $('#notes').value.trim(), qty });
+  closeOv(itemOv);
+  toast(`تمت إضافة ${cur.name} × ${qty} للسلة`);
+};
+
+/* 5. Cart state (validated, persisted) */
+const valid = l => l && menuItem(l.id) && Number.isInteger(l.qty) && l.qty >= 1 && l.qty <= MAX_QTY
+  && Array.isArray(l.extras) && l.extras.every(i => Number.isInteger(i) && C.extras[i]);
+function loadCart() {
+  try {
+    const v = JSON.parse(localStorage.getItem(KEY) || '[]');
+    return Array.isArray(v) ? v.filter(valid) : [];
+  } catch (e) { return []; }
+}
+function saveCart() { try { localStorage.setItem(KEY, JSON.stringify(cart)); } catch (e) {} }
+let cart = loadCart();
+const sameKey = l => JSON.stringify([l.id, l.spicy, l.extras, l.notes]);
+const count = () => cart.reduce((s, l) => s + l.qty, 0);
+const subtotal = () => cart.reduce((s, l) => s + lineTotal(l), 0);
+const orderType = () => document.querySelector('input[name=otype]:checked').value;
+
+function addLine(line) {
+  const hit = cart.find(l => sameKey(l) === sameKey(line));
+  if (hit) hit.qty = Math.min(MAX_QTY, hit.qty + line.qty);
+  else cart.push(line);
+  saveCart();
+  renderCart();
+}
+function renderCart() {
+  const n = count();
+  $('#cartCount').textContent = n;
+  $('#cartCount').hidden = n === 0;
+  $('#cartEmpty').hidden = n > 0;
+  $('#cartBody').hidden = n === 0;
+  $('#cartItems').innerHTML = cart.map((l, i) => {
+    const m = menuItem(l.id);
+    const det = [l.spicy ? 'سبايسي 🌶️' : '', ...l.extras.map(j => C.extras[j][0]), l.notes ? 'ملاحظة: ' + l.notes : ''].filter(Boolean).join(' · ');
+    return `<div class="cline">
+      <div><strong>${esc(m.name)}</strong><small>${esc(det || 'من غير إضافات')}</small></div>
+      <strong>${lineTotal(l)} جنيه</strong>
+      <div class="ctrl">
+        <button type="button" data-dec="${i}" aria-label="تقليل ${esc(m.name)}">−</button>
+        <span>${l.qty}</span>
+        <button type="button" data-inc="${i}" aria-label="زيادة ${esc(m.name)}">+</button>
+        <button type="button" class="del" data-del="${i}">حذف</button>
+      </div>
+    </div>`;
+  }).join('');
+  updateSummary();
+}
+function updateSummary() {
+  const sub = subtotal(), type = orderType(), fee = type === 'delivery' ? C.delivery.fee : 0;
+  const below = type === 'delivery' && sub < C.delivery.minOrder;
+  $('#addressField').hidden = type !== 'delivery';
+  $('#subtotal').textContent = sub + ' جنيه';
+  $('#fee').textContent = fee + ' جنيه';
+  $('#grand').textContent = (sub + fee) + ' جنيه';
+  $('#orderHint').textContent = below ? `الحد الأدنى للتوصيل ${C.delivery.minOrder} جنيه. زوّد طلبك أو اختار الاستلام.` : '';
+  $('#submitBtn').disabled = count() === 0 || below;
+}
+$('#cartItems').addEventListener('click', e => {
+  const b = e.target.closest('button');
+  if (!b) return;
+  const { inc, dec, del } = b.dataset;
+  if (inc !== undefined) cart[+inc].qty = Math.min(MAX_QTY, cart[+inc].qty + 1);
+  else if (dec !== undefined) { if (--cart[+dec].qty < 1) cart.splice(+dec, 1); }
+  else if (del !== undefined) cart.splice(+del, 1);
+  else return;
+  saveCart();
+  renderCart();
+});
+$('#clearBtn').onclick = () => { if (confirm('تفريغ السلة كلها؟')) { cart = []; saveCart(); renderCart(); } };
+$$('input[name=otype]').forEach(r => r.addEventListener('change', updateSummary));
+
+/* 6. Checkout via WhatsApp with validation */
+$('#checkout').addEventListener('submit', e => {
+  e.preventDefault();
+  const name = $('#cName').value.trim();
+  const phone = $('#cPhone').value.replace(/[\s-]/g, '').replace(/^\+20/, '0');
+  const type = orderType(), addr = $('#cAddr').value.trim(), sub = subtotal();
+  const err = !cart.length ? 'السلة فاضية.'
+    : name.length < 2 ? 'اكتب اسمك.'
+    : !/^01[0125]\d{8}$/.test(phone) ? 'اكتب رقم موبايل مصري صحيح من 11 رقم.'
+    : type === 'delivery' && addr.length < 5 ? 'اكتب عنوان التوصيل بالتفصيل.'
+    : type === 'delivery' && sub < C.delivery.minOrder ? `الحد الأدنى للتوصيل ${C.delivery.minOrder} جنيه.`
+    : '';
+  $('#formError').textContent = err;
+  if (err) return;
+  const fee = type === 'delivery' ? C.delivery.fee : 0;
+  const lines = cart.map((l, i) => {
+    const det = [l.spicy ? 'سبايسي' : '', ...l.extras.map(j => 'إضافة: ' + C.extras[j][0]), l.notes ? 'ملاحظة: ' + l.notes : ''].filter(Boolean);
+    return `${i + 1}) ${menuItem(l.id).name} × ${l.qty} = ${lineTotal(l)} جنيه` + (det.length ? '\n   ' + det.join(' | ') : '');
+  });
+  const msg = [
+    'طلب جديد من ' + C.brand,
+    'الاسم: ' + name,
+    'الموبايل: ' + phone,
+    'النوع: ' + (type === 'delivery' ? 'توصيل' : 'استلام من الفرع'),
+    type === 'delivery' ? 'العنوان: ' + addr : null,
+    '',
+    ...lines,
+    '',
+    'الإجمالي: ' + sub + ' جنيه' + (fee ? ' + توصيل ' + fee + ' = ' + (sub + fee) + ' جنيه' : '')
+  ].filter(x => x !== null).join('\n');
+  window.open(LINKS.whatsapp + '?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+});
+
+/* 7. Dialog behaviour: Escape, backdrop, focus return, focus trap */
+function openOv(ov) {
+  lastFocus = document.activeElement;
+  ov.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  ov.querySelector('.close').focus();
+}
+function closeOv(ov) {
+  ov.classList.remove('open');
+  document.body.style.overflow = '';
+  if (lastFocus) lastFocus.focus();
+}
+$$('.overlay').forEach(ov => ov.addEventListener('click', e => {
+  if (e.target === ov || e.target.closest('[data-close]')) closeOv(ov);
+}));
+$('#cartOpen').onclick = () => { renderCart(); openOv(cartOv); };
+document.addEventListener('keydown', e => {
+  const ov = document.querySelector('.overlay.open');
+  if (!ov) return;
+  if (e.key === 'Escape') return closeOv(ov);
+  if (e.key !== 'Tab') return;
+  const f = [...ov.querySelectorAll('button:not([disabled]),a[href],input,textarea')].filter(el => el.offsetParent);
+  const first = f[0], last = f[f.length - 1];
+  if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+  else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+});
+
+let toastTimer;
+function toast(msg) {
+  const t = $('#toast');
+  t.textContent = msg;
+  t.hidden = false;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.hidden = true, 2800);
+}
+
+renderCart();
+</script>
+</body>
+</html>
